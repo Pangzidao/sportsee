@@ -1,25 +1,29 @@
-import logo from './logo.svg';
 import './App.css';
+import ActivityGraph from './components/ActivityGraph';
+import { getUserData } from './UserData';
+import { useState, useEffect } from 'react';
+import SessionsGraph from './components/SessionsGraph';
+
+let id = 18
+
 
 function App() {
+  const [firstName, setFirstName] = useState('');
+
+  useEffect(() => {
+    getUserData(id).then((data) => {
+      setFirstName(data.userInfos.firstName);
+    });
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>{firstName}</h1>
+      <ActivityGraph id={id} />
+      <SessionsGraph id={id} />
     </div>
-  );
+  )
 }
+
 
 export default App;
