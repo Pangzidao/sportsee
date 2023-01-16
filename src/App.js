@@ -1,8 +1,9 @@
 import './App.css';
 import ActivityGraph from './components/ActivityGraph';
-import { getUserData } from './UserData';
+import { getUserData } from './userData';
 import { useState, useEffect } from 'react';
 import SessionsGraph from './components/SessionsGraph';
+import PerformanceGraph from './components/PerformanceGraph';
 
 let id = 18
 
@@ -12,6 +13,7 @@ function App() {
 
   useEffect(() => {
     getUserData(id).then((data) => {
+      console.log(data)
       setFirstName(data.userInfos.firstName);
     });
   }, []);
@@ -21,6 +23,7 @@ function App() {
       <h1>{firstName}</h1>
       <ActivityGraph id={id} />
       <SessionsGraph id={id} />
+      <PerformanceGraph id={id} />
     </div>
   )
 }

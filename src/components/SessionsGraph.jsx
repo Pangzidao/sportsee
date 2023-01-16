@@ -1,7 +1,7 @@
 import { LineChart, Line, XAxis, YAxis,Tooltip, Legend} from 'recharts';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { getUserSession } from '../UserData';
+import { getUserSession } from '../userData';
 
 function SessionsGraph(props){
     const [sessionsData, setSessionsData] = useState('');
