@@ -22,14 +22,10 @@ class UserSession{
 }
 
 class UserPerformance{
-    constructor(cardio, energy, endurance, strength, speed, intensity){
-        this.cardio = cardio
-        this.energy = energy
-        this.endurance = endurance
-        this.strength = strength
-        this.speed = speed
-        this.intensity = intensity
-
+    constructor(subject, value, fullValue){
+        this.subject = subject
+        this.value = value
+        this.fullValue = fullValue
     }
 }
 
@@ -53,15 +49,15 @@ export const getUserSession = async (id) => {
     const { data } = await response.json()
     const days = ["l", "m","m","j","v","s","d"]
     const formatedDataSessions = []
-    data.sessions.map((session, index) => formatedDataSessions.push(new UserSession(days[index], session.sessionLength)))
+    data.sessions.map((session, index) => formatedDataSessions.push(new UserSession(days[index].toUpperCase(), session.sessionLength)))
     return formatedDataSessions
 }
 
 export const getUserPerformance = async (id) => {
     const response = await fetch(`http://localhost:3000/user/${id}/performance`)
     const { data } = await response.json()
-
-    return new UserPerformance(data.data[0].value,data.data[1].value,data.data[2].value,data.data[3].value,data.data[4].value,data.data[5].value)
+    const userPerformances = []
+    data.data.map((p) => p.kind = data.kind[p.kind])
+    data.data.forEach((d) => userPerformances.push(new UserPerformance(d.kind, d.value, 250)))
+    return userPerformances
 }
-
-

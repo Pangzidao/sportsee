@@ -14,7 +14,6 @@ function ActivityGraph(props){
     const id = props.id
     useEffect(() => {
         getUserActivity(id).then((data) => {
-          console.log(data)
           setActivityData(data)
         });
       }, [id]);

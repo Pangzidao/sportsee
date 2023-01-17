@@ -1,7 +1,8 @@
-import { LineChart, Line, XAxis, YAxis,Tooltip, Legend} from 'recharts';
+import { LineChart, Line, XAxis, YAxis,Tooltip} from 'recharts';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { getUserSession } from '../userData';
+import styles from '../styles/SessionsGraph.module.css'
 
 function SessionsGraph(props){
     const [sessionsData, setSessionsData] = useState('');
@@ -13,24 +14,16 @@ function SessionsGraph(props){
       }, [id]);
     
     return(
-        <LineChart
-          width={500}
-          height={300}
-          data={sessionsData}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
-          <XAxis dataKey="name" />
-          <YAxis />
+      <div className={styles.container}>
+        <h2 className={styles.title}>Durée moyenne des sessions</h2>
+        <LineChart width={500} height={300} data={sessionsData}>
+          <XAxis className={styles.xAxis} axisLine={false} tickLine={false} dataKey="day" textDecoration={{color:'white'}}/>
+          <YAxis hide={true} padding={{ bottom:30}}/>
           <Tooltip />
-          <Legend />
-          <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
-          <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+          <Line type="monotone" dataKey="minutes" stroke="#FFFFFF" />
         </LineChart>
+      </div>
+      
     ) 
 }
 
