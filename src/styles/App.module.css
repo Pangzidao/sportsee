@@ -76,7 +76,6 @@
 
 .userInfosContainer{
     display: flex;
-    border: solid;
     justify-content: space-between;
     height: fit-content;
 }
