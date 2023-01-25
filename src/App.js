@@ -1,5 +1,8 @@
 import ActivityGraph from './components/ActivityGraph';
 import { getUserData, getUserDataMock } from './userData';
+import { getUserActivity, getUserActivityMock } from './userData';
+import { getUserPerformance, getUserPerformanceMock } from "./userData";
+import { getUserSession, getUserSessionMock } from './userData';
 import { useState, useEffect } from 'react';
 import SessionsGraph from './components/SessionsGraph';
 import PerformanceGraph from './components/PerformanceGraph';
@@ -22,17 +25,59 @@ let id = 12
 let APIconnection = false
 console.log("connected to API: " + APIconnection)
 
+class UserScore{
+  constructor(name, value){
+   this.name = name
+   this.value = value
+  }
+}
+
 function App() {
   const [firstName, setFirstName] = useState('');
+  const [activityData, setActivityData] = useState('');
+  const [keyData, setKeyData] = useState('');
+  const [performanceData, setPerformanceData] = useState('');
+  const [scoreData, setScoreData] = useState('');
+  const [sessionsData, setSessionsData] = useState('');
+
 
   useEffect(() => {
     if (APIconnection === true){
-      getUserData(id).then((data) => {
-        setFirstName(data.userInfos.firstName);
+      getUserData(id).then((userData) => {
+        setFirstName(userData.userInfos.firstName);
+        setKeyData(userData.keyData)
       });
+      getUserActivity(id).then((activityData) => {
+        setActivityData(activityData)
+      });
+      getUserPerformance(id).then((performanceData) => {
+        setPerformanceData(performanceData);
+      });
+      const dataScore = []
+            getUserData(id).then((data) => {
+                dataScore.push(new UserScore("score", data.todayScore * 100))
+                dataScore.push(new UserScore("score", 100 - data.todayScore * 100))
+                setScoreData(dataScore)
+            })
+            getUserSession(id).then((sessionData) => {
+              setSessionsData(sessionData);
+            });
     }else{
-      const data = getUserDataMock(id)
-      setFirstName(data.userInfos.firstName);
+      const userData = getUserDataMock(id)
+      setFirstName(userData.userInfos.firstName);
+      setKeyData(userData.keyData);
+
+      const activityData = getUserActivityMock(id)
+        setActivityData(activityData);
+      const performanceData = getUserPerformanceMock(id)
+        setPerformanceData(performanceData)
+        const dataScore = []
+        const data = getUserDataMock(id)
+        dataScore.push(new UserScore("score", data.todayScore * 100))
+        dataScore.push(new UserScore("score", 100 - data.todayScore * 100))
+        setScoreData(dataScore) 
+        const sessionData = getUserSessionMock(id)
+        setSessionsData(sessionData);
     }
     
   }, []);
@@ -67,23 +112,23 @@ function App() {
           <div className={styles.userInfosContainer}>
             <div className={styles.graphs}>
               <div className={styles.activityGraphContainer}>
-                <ActivityGraph id={id} APIconnection={APIconnection}/>
+                <ActivityGraph id={id} APIconnection={APIconnection} data={activityData}/>
               </div>
               <div className={styles.sessionsGraphContainer}>
-                <SessionsGraph id={id} APIconnection={APIconnection} />
+                <SessionsGraph id={id} APIconnection={APIconnection} data={sessionsData}/>
               </div>
               <div className={styles.performanceGraphContainer}>
-                <PerformanceGraph id={id} APIconnection={APIconnection}/>
+                <PerformanceGraph id={id} APIconnection={APIconnection} data={performanceData}/>
               </div>
               <div className={styles.scoreGraphContainer}>
-                <ScoreGraph id={id} APIconnection={APIconnection}/>
+                <ScoreGraph id={id} APIconnection={APIconnection} data={scoreData}/>
               </div>
             </div>
             <div className={styles.infosCard}>
-              <Info logo={caloriesLogo} name="Calories" logoBackground="#fbeaea" id={id} type="calorieCount" unit="kCal" APIconnection={APIconnection} />
-              <Info logo={proteinsLogo} name="Proteines" logoBackground="#e9f4fb" id={id} type="proteinCount"unit="g" APIconnection={APIconnection}/>
-              <Info logo={glucidesLogo} name="Glucides" logoBackground="#fbf6e5" id={id} type="carbohydrateCount" unit="g" APIconnection={APIconnection}/>
-              <Info logo={lipidesLogo} name="Lipides" logoBackground="#fbeaef" id={id} type="lipidCount" unit="g" APIconnection={APIconnection}/>
+              <Info logo={caloriesLogo} name="Calories" logoBackground="#fbeaea" id={id} type="calorieCount" unit="kCal" APIconnection={APIconnection} data={keyData} />
+              <Info logo={proteinsLogo} name="Proteines" logoBackground="#e9f4fb" id={id} type="proteinCount"unit="g" APIconnection={APIconnection} data={keyData}/>
+              <Info logo={glucidesLogo} name="Glucides" logoBackground="#fbf6e5" id={id} type="carbohydrateCount" unit="g" APIconnection={APIconnection} data={keyData}/>
+              <Info logo={lipidesLogo} name="Lipides" logoBackground="#fbeaef" id={id} type="lipidCount" unit="g" APIconnection={APIconnection} data={keyData}/>
             </div>
            
           </div>

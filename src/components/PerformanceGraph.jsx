@@ -1,23 +1,9 @@
-import { getUserPerformance, getUserPerformanceMock } from "../userData";
-import { useState, useEffect } from 'react';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer} from 'recharts';
 
 
 function PerformanceGraph(props){
-    const [performanceData, setPerformanceData] = useState('');
-    const id = props.id
-    let APIconnection = props.APIconnection
-    useEffect(() => {
-      if(APIconnection === true){
-        getUserPerformance(id).then((data) => {
-          setPerformanceData(data);
-        });
-      }else{
-        const data = getUserPerformanceMock(id)
-        setPerformanceData(data)
-      }
-      }, [id,APIconnection ]);
 
+    const performanceData = props.data
 
       return(
         <ResponsiveContainer width='100%' height={450}>

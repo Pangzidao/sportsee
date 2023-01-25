@@ -1,25 +1,9 @@
 import { LineChart, Line, XAxis, YAxis,Tooltip, ResponsiveContainer} from 'recharts';
-import { useState } from 'react';
-import { useEffect } from 'react';
-import { getUserSession, getUserSessionMock } from '../userData';
 import styles from '../styles/SessionsGraph.module.css'
 
 function SessionsGraph(props){
-    const [sessionsData, setSessionsData] = useState('');
-    const id = props.id
-    let APIconnection = props.APIconnection
-    useEffect(() => {
-      if(APIconnection === true){
-        getUserSession(id).then((data) => {
-          setSessionsData(data);
-        });
-      }else{
-        const data = getUserSessionMock(id)
-        setSessionsData(data);
-      }
 
-        
-      }, [id, APIconnection]);
+    const sessionsData = props.data
     
     return(
       <div className={styles.container}>

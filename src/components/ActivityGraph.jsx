@@ -1,6 +1,4 @@
 import { BarChart, XAxis, YAxis, CartesianGrid, Tooltip, Bar, ResponsiveContainer} from 'recharts';
-import { useState, useEffect } from 'react';
-import { getUserActivity, getUserActivityMock } from '../userData';
 import styles from '../styles/ActivityGraph.module.css'
 
 function CustomToolTip(props){
@@ -10,21 +8,8 @@ function CustomToolTip(props){
 }
 
 function ActivityGraph(props){
-    const [activityData, setActivityData] = useState('');
-    const id = props.id
-    let APIconnection = props.APIconnection
-    useEffect(() => {
-      if(APIconnection === true){
-        getUserActivity(id).then((data) => {
-          setActivityData(data)
-        });
-      }else{
-        const data = getUserActivityMock(id)
-        setActivityData(data);
-      }
-        
-      }, [id, APIconnection]);
 
+    const activityData = props.data
     return(
         <div className={styles.container}>
           <header className={styles.header}>
